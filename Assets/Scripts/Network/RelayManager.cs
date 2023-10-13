@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using UnityEngine;
 
@@ -9,6 +11,7 @@ namespace Network
     public class RelayManager : MonoBehaviour
     {
         public static RelayManager Instance;
+        private RelayServerData _relayServerData;
         
         void Awake()
         {
@@ -33,22 +36,19 @@ namespace Network
         // {
         //
         // }
-        
+
         public async Task<string> CreateRelay()
         {
             try
             {
                 var allocation = await RelayService.Instance.CreateAllocationAsync(LobbyManager.MaxPlayers - 1); // host doesn't count
                 var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
+                _relayServerData = new RelayServerData(allocation, "dtls");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(_relayServerData);
+                NetworkManager.Singleton.StartHost();
                 
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetHostRelayData(
-                    allocation.RelayServer.IpV4,
-                    (ushort)allocation.RelayServer.Port,
-                    allocation.AllocationIdBytes,
-                    allocation.Key,
-                    allocation.ConnectionData
-                );
-                
+
                 return joinCode;
             }
             catch (RelayServiceException exception)
@@ -64,14 +64,9 @@ namespace Network
             {
                 var joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
                 
-                NetworkManager.Singleton.GetComponent<UnityTransport>().SetClientRelayData(
-                    joinAllocation.RelayServer.IpV4,
-                    (ushort)joinAllocation.RelayServer.Port,
-                    joinAllocation.AllocationIdBytes,
-                    joinAllocation.Key,
-                    joinAllocation.ConnectionData,
-                    joinAllocation.HostConnectionData
-                );
+                _relayServerData = new RelayServerData(joinAllocation, "dtls");
+                NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(_relayServerData);
+                NetworkManager.Singleton.StartClient();
             }
             catch (RelayServiceException exception)
             {

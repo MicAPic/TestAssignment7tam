@@ -1,9 +1,12 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerNetworkController : NetworkBehaviour
 {
+    public static event Action OnPlayerLoaded;
+    
     [Header("Shooting")]
     [SerializeField]
     public float fireRate = 1.0f;
@@ -27,14 +30,16 @@ public class PlayerNetworkController : NetworkBehaviour
     }
 
     // Start is called before the first frame update
-    // void Start()
-    // {
-    //     
-    // }
+    void Start()
+    {
+        OnPlayerLoaded?.Invoke();
+    }
     
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner) return;
+        
         // Shooting
         if (_playerInput.actions["Fire"].IsPressed() && Time.time - _lastFireTime >= fireRate)
         {

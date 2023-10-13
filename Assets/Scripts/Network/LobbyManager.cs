@@ -28,7 +28,7 @@ namespace Network
         
         [Header("Timers")]
         private const float HeartbeatTimerInterval = 15.0f; // seconds, default timeout is 30 seconds
-        private const float PollTimerInterval = 1.1f; // seconds, min interval is 1 second
+        private const float PollTimerInterval = 1.8f; // seconds, min interval is 1 second
         private float _heartbeatTimer;
         private float _lobbyPollTimer;
 
@@ -177,9 +177,9 @@ namespace Network
 
         private async void HandleLobbyHeartbeat()
         {
-            if (_currentLobby == null) return;
+            if (!IsLobbyHost()) return;
             // pinging lobby, so that it stays accessible for potential players
-            _heartbeatTimer -= Time.unscaledDeltaTime;
+            _heartbeatTimer -= Time.deltaTime;
             if (_heartbeatTimer < 0.0f)
             {
                 _heartbeatTimer = HeartbeatTimerInterval;
@@ -191,7 +191,7 @@ namespace Network
         {
             if (_currentLobby == null) return;
             // pinging lobby, so that it stays accessible for potential players
-            _lobbyPollTimer -= Time.unscaledDeltaTime;
+            _lobbyPollTimer -= Time.deltaTime;
             if (_lobbyPollTimer < 0.0f)
             {
                 _lobbyPollTimer = PollTimerInterval;
@@ -207,10 +207,8 @@ namespace Network
         private void StartGameAsClient()
         {
             if (IsLobbyHost()) return;
-            RelayManager.Instance.JoinRelay(_currentLobby.Data[StartKey].Value);
             SceneLoadData.CanLoadScene = true;
-            NetworkManager.Singleton.StartClient();
-            
+            RelayManager.Instance.JoinRelay(_currentLobby.Data[StartKey].Value);
         }
 
         private async void StartGameAsHost()
@@ -220,6 +218,9 @@ namespace Network
             {
                 Debug.Log("Starting game...");
 
+                SceneLoadData.CanLoadScene = true;
+                // await GameManager.IsLoadedTask.Task;
+                
                 var relayCode = await RelayManager.Instance.CreateRelay();
 
                 var lobby = await Lobbies.Instance.UpdateLobbyAsync(_currentLobby.Id, new UpdateLobbyOptions
@@ -230,9 +231,6 @@ namespace Network
                     }
                 });
                 _currentLobby = lobby;
-                
-                SceneLoadData.CanLoadScene = true;
-                NetworkManager.Singleton.StartHost();
             }
             catch (LobbyServiceException exception)
             {

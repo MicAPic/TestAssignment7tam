@@ -4,6 +4,17 @@ using UnityEngine.SceneManagement;
 
 public class LoadingScreen : MonoBehaviour
 {
+    void OnEnable()
+    {
+        DontDestroyOnLoad(gameObject);
+        PlayerNetworkController.OnPlayerLoaded += DeactivateAnimation;
+    }
+
+    void OnDisable()
+    {
+        PlayerNetworkController.OnPlayerLoaded -= DeactivateAnimation;
+    }
+    
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -12,5 +23,10 @@ public class LoadingScreen : MonoBehaviour
         {
             yield return null;
         }
+    }
+
+    void DeactivateAnimation()
+    {
+        Destroy(gameObject);
     }
 }
