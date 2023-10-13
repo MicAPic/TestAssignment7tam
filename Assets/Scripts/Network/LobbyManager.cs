@@ -165,7 +165,7 @@ namespace Network
             var initializationOptions = new InitializationOptions();
             initializationOptions.SetProfile(_currentPlayerName);
         
-            await UnityServices.InitializeAsync();
+            await UnityServices.InitializeAsync(initializationOptions);
             AuthenticationService.Instance.SignedIn += () =>
             {
                 Debug.Log("Signed in!");
@@ -184,6 +184,7 @@ namespace Network
             {
                 _heartbeatTimer = HeartbeatTimerInterval;
                 await LobbyService.Instance.SendHeartbeatPingAsync(_currentLobby.Id);
+                // Debug.Log("❤");
             }
         }
 
