@@ -1,4 +1,5 @@
 public static class SceneLoadData
 {
-    public static string sceneToLoad;
+    public static string SceneToLoad;
+    public static bool CanLoadScene = true;
 }

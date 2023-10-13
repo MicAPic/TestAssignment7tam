@@ -7,9 +7,8 @@ public class LoadingScreen : MonoBehaviour
     // Start is called before the first frame update
     IEnumerator Start()
     {
-        Debug.Log(SceneLoadData.sceneToLoad);
-        var asyncLoad = SceneManager.LoadSceneAsync(SceneLoadData.sceneToLoad);
-        while (!asyncLoad.isDone)
+        var asyncLoad = SceneManager.LoadSceneAsync(SceneLoadData.SceneToLoad);
+        while (!asyncLoad.isDone && !SceneLoadData.CanLoadScene)
         {
             yield return null;
         }

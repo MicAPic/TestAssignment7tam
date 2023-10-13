@@ -6,7 +6,7 @@ namespace UI
     public class UI : MonoBehaviour
     {
         [SerializeField]
-        private string nextSceneName;
+        protected string nextSceneName;
     
         // Start is called before the first frame update
         // void Start()
@@ -14,18 +14,9 @@ namespace UI
         //     
         // }
 
-        // Update is called once per frame
-        void Update()
+        protected void LoadScene()
         {
-            // if (Keyboard.current.anyKey.isPressed)
-            // {
-            //     LoadScene(nextSceneName);
-            // }
-        }
-
-        public void LoadScene(string sceneName)
-        {
-            SceneLoadData.sceneToLoad = sceneName;
+            SceneLoadData.SceneToLoad = nextSceneName;
             SceneManager.LoadScene("Loading");
         }
     }
