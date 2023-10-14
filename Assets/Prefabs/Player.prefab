@@ -465,7 +465,7 @@ MonoBehaviour:
   playerNameText: {fileID: 1128986734}
   coinCounterText: {fileID: 1577141232}
   healthBar: {fileID: 691459276}
-  healthController: {fileID: 9126510059913338444}
+  healthController: {fileID: 9164795528885724950}
 --- !u!1 &7931184067744800557
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 8084806523688976959}
   - component: {fileID: 4424393695563509213}
   - component: {fileID: 9189275893346819561}
+  - component: {fileID: 9164795528885724950}
   m_Layer: 3
   m_Name: Avatar
   m_TagString: Untagged
@@ -644,6 +645,22 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &9164795528885724950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8084806523688976956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ad4422ffd23cae4291ce044a170c914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints:
+    m_InternalValue: 100
+  maxHealth:
+    m_InternalValue: 0
 --- !u!1 &8084806523993847442
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +848,6 @@ GameObject:
   - component: {fileID: 8084806524392447062}
   - component: {fileID: 8084806524392447058}
   - component: {fileID: 4236526836002995369}
-  - component: {fileID: 9126510059913338444}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -989,20 +1005,3 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &9126510059913338444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8084806524392447086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad4422ffd23cae4291ce044a170c914, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthPoints:
-    m_InternalValue: 100
-  maxHealth:
-    m_InternalValue: 0
-  hitInvincibilityTime: 0.15

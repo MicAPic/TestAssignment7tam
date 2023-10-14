@@ -37,6 +37,6 @@ public class HealthController : NetworkBehaviour
     [ClientRpc]
     private void DieClientRpc()
     {
-        gameObject.SetActive(false);
+        transform.parent.gameObject.SetActive(false);
     }
 }

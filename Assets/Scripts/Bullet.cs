@@ -1,4 +1,3 @@
-using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -7,28 +6,31 @@ public class Bullet : NetworkBehaviour
     [SerializeField] 
     private float damage;
     private Rigidbody2D _rb;
+    private SpriteRenderer _spriteRenderer;
 
     void Awake()
     {
         _rb = GetComponentInChildren<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (collision.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
-        if (collision.gameObject.TryGetComponent(out HealthController healthController) && 
+        if (col.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
+        if (col.gameObject.TryGetComponent(out HealthController healthController) && 
             healthController.enabled)
         {
+            _spriteRenderer.enabled = false;
             healthController.TakeDamage(damage);
             return;
         }
         DisableServerRpc();
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    void OnTriggerExit2D(Collider2D other)
     {
         // allow some time for collision to register server-side to ensure we applied the damage 
-        if (collision.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
+        if (other.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
         DisableServerRpc();
     }
 
@@ -47,6 +49,7 @@ public class Bullet : NetworkBehaviour
     private void EnableClientRpc(Vector3 direction, float firePower, float damageToDeal)
     {
         damage = damageToDeal;
+        _spriteRenderer.enabled = true;
         gameObject.SetActive(true);
         
         _rb.AddForce(direction * firePower, ForceMode2D.Impulse);
