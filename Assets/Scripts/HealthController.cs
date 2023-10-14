@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class HealthController : MonoBehaviour
+public class HealthController : NetworkBehaviour
 {
     [Header("Parameters")]
     [SerializeField]

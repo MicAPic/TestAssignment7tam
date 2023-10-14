@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -37,6 +36,10 @@ public class PlayerNetworkController : NetworkBehaviour
     private float _movementValue;
     private Vector2 _rotationValue = Vector2.zero;
 
+    [Header("Rotation")]
+    [SerializeField]
+    private Transform avatar;
+
     private Rigidbody2D _rb;
     private PlayerInput _playerInput;
 
@@ -65,7 +68,7 @@ public class PlayerNetworkController : NetworkBehaviour
         }
 
         // Rotation
-        transform.Rotate(new Vector3(0, 0, _rotationValue.x * rotationSpeed * Time.deltaTime));
+        avatar.Rotate(new Vector3(0, 0, _rotationValue.x * rotationSpeed * Time.deltaTime));
     }
     
     void FixedUpdate()
@@ -73,7 +76,7 @@ public class PlayerNetworkController : NetworkBehaviour
         if (!IsOwner) return;
         
         // Movement
-        _rb.velocity = transform.up * (_movementValue * movementSpeed);
+        _rb.velocity = avatar.up * (_movementValue * movementSpeed);
     }
 
     void OnMove(InputValue value)
@@ -89,7 +92,7 @@ public class PlayerNetworkController : NetworkBehaviour
     private void Shoot(Bullet bullet)
     {
         bullet.transform.position = shootingPoint.position;
-        bullet.EnableServerRpc(transform.up, firePower, damageToDeal);
+        bullet.EnableServerRpc(avatar.up, firePower, damageToDeal);
     }
 
     [ServerRpc]
