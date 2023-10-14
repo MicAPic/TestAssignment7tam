@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,9 +11,24 @@ public class PlayerNetworkController : NetworkBehaviour
     
     [Header("Shooting")]
     [SerializeField]
-    public float fireRate = 1.0f;
+    private float fireRate = 1.0f;
+    [SerializeField]
+    private float firePower = 5.0f;
+    [SerializeField]
+    private float damageToDeal = 10.0f;
+
+    [SerializeField]
+    private Transform shootingPoint;
+    
     private float _lastFireTime;
     
+    [Space]
+    // bullet pooling:
+    [SerializeField]
+    private GameObject bulletPrefab;
+    private List<Bullet> _pool = new();
+    //
+
     [Header("Movement")]
     [SerializeField]
     private float movementSpeed = 1.0f;
@@ -43,15 +60,18 @@ public class PlayerNetworkController : NetworkBehaviour
         // Shooting
         if (_playerInput.actions["Fire"].IsPressed() && Time.time - _lastFireTime >= fireRate)
         {
-            Shoot();
+            _lastFireTime = Time.time;
+            GetBulletFromPoolServerRpc();
         }
 
         // Rotation
-        transform.Rotate(new Vector3(0, 0, _rotationValue.x * rotationSpeed));
+        transform.Rotate(new Vector3(0, 0, _rotationValue.x * rotationSpeed * Time.deltaTime));
     }
     
     void FixedUpdate()
     {
+        if (!IsOwner) return;
+        
         // Movement
         _rb.velocity = transform.up * (_movementValue * movementSpeed);
     }
@@ -66,9 +86,34 @@ public class PlayerNetworkController : NetworkBehaviour
         _rotationValue = value.Get<Vector2>();
     }
 
-    private void Shoot()
+    private void Shoot(Bullet bullet)
     {
-        Debug.Log("Shot fired!");
-        _lastFireTime = Time.time;
+        bullet.transform.position = shootingPoint.position;
+        bullet.EnableServerRpc(transform.up, firePower, damageToDeal);
+    }
+
+    [ServerRpc]
+    private void GetBulletFromPoolServerRpc()
+    {
+        for (var i = 0; i < _pool.Count; i++)
+        {
+            if (_pool[i].gameObject.activeInHierarchy || _pool[i].OwnerClientId != OwnerClientId) continue;
+            
+            Shoot(_pool[i]);
+            return;
+        }
+
+        SpawnBulletServerRpc();
+    }
+
+    [ServerRpc]
+    private void SpawnBulletServerRpc()
+    {
+        var result = Instantiate(bulletPrefab, transform).GetComponent<Bullet>();
+        result.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
+        
+        _pool.Add(result);
+        
+        Shoot(result);
     }
 }
