@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,16 +13,25 @@ public class Bullet : NetworkBehaviour
         _rb = GetComponentInChildren<Rigidbody2D>();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
-        if (collision.gameObject.TryGetComponent(out HealthController healthController) && healthController.enabled)
+        if (collision.gameObject.TryGetComponent(out HealthController healthController) && 
+            healthController.enabled)
         {
             healthController.TakeDamage(damage);
+            return;
         }
         DisableServerRpc();
     }
-    
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        // allow some time for collision to register server-side to ensure we applied the damage 
+        if (collision.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
+        DisableServerRpc();
+    }
+
     private void OnBecameInvisible()
     {
         DisableServerRpc();

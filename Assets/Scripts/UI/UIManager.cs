@@ -1,15 +1,13 @@
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
 
 namespace UI
 {
     public class UIManager : NetworkBehaviour
     {
         public static UIManager Instance;
-        private PlayerInfo[] _playerInfos;
+        private Dictionary<ulong, PlayerInfo> _playerInfos;
 
         void Awake()
         {
@@ -23,29 +21,33 @@ namespace UI
         }
 
         // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
+        // void Start()
+        // {
+        //
+        // }
+        
         // Update is called once per frame
-        void Update()
-        {
-
-        }
+        // void Update()
+        // {
+        //
+        // }
 
         [ClientRpc]
-        public void RegisterPlayerInfoClientRpc(FixedString32Bytes oldValue, FixedString32Bytes newValue)
+        public void RegisterPlayerInfoClientRpc(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
-            _playerInfos = FindObjectsOfType<PlayerInfo>();
+            _playerInfos = new Dictionary<ulong, PlayerInfo>();
+            // we use an inefficient FindObjectsOfType in case a player joins after somebody dies
+            foreach (var playerInfo in FindObjectsOfType<PlayerInfo>())
+            {
+                _playerInfos[playerInfo.OwnerClientId] = playerInfo;
+            }
             UpdatePlayerNamesClientRpc();
         }
 
         [ClientRpc]
         private void UpdatePlayerNamesClientRpc()
         {
-            Debug.Log("Update loop");
-            foreach (var playerInfo in _playerInfos)
+            foreach (var playerInfo in _playerInfos.Values)
             {
                 playerInfo.UpdatePlayerNameText();
             }

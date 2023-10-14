@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using Unity.Collections;
 using Unity.Netcode;
@@ -16,8 +17,11 @@ namespace UI
         [SerializeField]
         [FormerlySerializedAs("coinCounter")] 
         private TMP_Text coinCounterText;
+        [Space]
         [SerializeField]
         private Image healthBar;
+        [SerializeField]
+        private HealthController healthController;
 
         private NetworkVariable<FixedString32Bytes> _playerName = new(string.Empty, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -30,31 +34,27 @@ namespace UI
         void OnEnable()
         {
             _playerName.OnValueChanged += UIManager.Instance.RegisterPlayerInfoClientRpc;
+            healthController.healthPoints.OnValueChanged += UpdateHealthBarClientRpc;
         }
         
         void OnDisable()
         {
             _playerName.OnValueChanged -= UIManager.Instance.RegisterPlayerInfoClientRpc;
+            healthController.healthPoints.OnValueChanged -= UpdateHealthBarClientRpc;
         }
 
         public void UpdatePlayerNameText()
         {
             playerNameText.text = _playerName.Value.ToString();
         }
-
-        // [ServerRpc]
-        // private void SetNameServerRpc()
-        // {
-        //     Debug.Log("Im set 1");
-        //     SetNameClientRpc();
-        // }
-
-        // [ClientRpc]
-        // private void SetNameClientRpc()
-        // {
-        //     Debug.Log("Im set 2");
-        //     playerNameText.text = _playerName.Value.ToString();
-        // }
-
+        
+        [ClientRpc]
+        private void UpdateHealthBarClientRpc(float previousValue, float newValue)
+        {
+            healthBar.DOFillAmount(
+                newValue / healthController.maxHealth.Value, 
+                0.3f
+            );
+        }
     }
 }

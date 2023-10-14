@@ -6,7 +6,6 @@ TestAssignment7tam is a test assignment I did for a job interview in around 2 da
 //TODO
 
 ## Getting Started
-//TODO
 ### Prerequisites
 - Unity 2021.3.9f1 installed;
 - Android SDK and JDK installed for Android support.

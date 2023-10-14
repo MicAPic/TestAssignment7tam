@@ -240,7 +240,7 @@ namespace Network
 
         private static string GenerateRandomName()
         {
-            return "7TAM_" + Random.Range(0, 100);
+            return "7TAM_" + Random.Range(0, 100).ToString("00");
         }
     }
 }
