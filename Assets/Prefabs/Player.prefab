@@ -462,6 +462,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade40331ff924b0588480e3a5a80d874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerName:
+    m_InternalValue:
+      utf8LengthInBytes: 0
+      bytes:
+        offset0000:
+          byte0000: 0
+          byte0001: 0
+          byte0002: 0
+          byte0003: 0
+          byte0004: 0
+          byte0005: 0
+          byte0006: 0
+          byte0007: 0
+          byte0008: 0
+          byte0009: 0
+          byte0010: 0
+          byte0011: 0
+          byte0012: 0
+          byte0013: 0
+          byte0014: 0
+          byte0015: 0
+        byte0016: 0
+        byte0017: 0
+        byte0018: 0
+        byte0019: 0
+        byte0020: 0
+        byte0021: 0
+        byte0022: 0
+        byte0023: 0
+        byte0024: 0
+        byte0025: 0
+        byte0026: 0
+        byte0027: 0
+        byte0028: 0
+        byte0029: 0
   playerNameText: {fileID: 1128986734}
   coinCounterText: {fileID: 1577141232}
   healthBar: {fileID: 691459276}
@@ -661,6 +696,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoints:
     m_InternalValue: 100
+  maxHealth:
+    m_InternalValue: 0
 --- !u!114 &3657823150393111845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +710,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62fa4f01fe4c502498fb19a282de71e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Coins:
+  coins:
     m_InternalValue: 0
 --- !u!1 &8084806523993847442
 GameObject:
@@ -997,7 +1034,7 @@ MonoBehaviour:
   shootingPoint: {fileID: 3725974308812274361}
   bulletPrefab: {fileID: 5383138781445300289, guid: 7edb5e67fb03913448d91cfdb68cc98f, type: 3}
   movementSpeed: 4.5
-  rotationSpeed: -50
+  rotationSpeed: -65
   avatar: {fileID: 8084806523688976958}
 --- !u!114 &4236526836002995369
 MonoBehaviour:

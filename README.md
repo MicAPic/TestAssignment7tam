@@ -1,5 +1,4 @@
 # TestAssignment7tam
-________________________________________________________________
 TestAssignment7tam is a test assignment I did for a job interview in around 3 days. It's a 2D top-down shooter that uses Unity's _Netcode for GameObjects_, _Relay_ and _Lobby_ packages as the network stack, providing a seamless multiplayer experience for Andorid devices.
 
 ## Table of Contents
@@ -25,7 +24,11 @@ Before you start, you need to configure Unity Gaming Services for this project. 
 3. In your [Unity Dashboard](https://dashboard.unity3d.com/) under the Multiplayer tab enable both services for your project.
 
 ## How to Play
-//TODO
+Use the on-screen controls to move around and shoot other players. Your objective is simple: be the last one standing!
+
+![image](https://github.com/MicAPic/TestAssignment7tam/main/Screenshots/Screenshot_2556x1179_2.png?raw=true)
+
+Alternatively, you can use keyboard controls: WASD or Arrow keys for movement and Space or LMB for shooting.
 
 ## License
 This project is licensed under the [MIT license](https://github.com/MicAPic/TestAssignment7tam/blob/main/LICENSE).

@@ -47,9 +47,7 @@ namespace UI
         [ClientRpc]
         public void RemovePlayerInfoClientRpc(ulong id)
         {
-            Debug.Log("huh");
             _playerInfos.Remove(id);
-            Debug.Log(_playerInfos.Count);
             if (_playerInfos.Count < 2)
             {
                 SetEndGameScreen();
