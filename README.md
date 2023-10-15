@@ -28,7 +28,7 @@ Use the on-screen controls to move around and shoot other players. Your objectiv
 
 ![image](https://github.com/MicAPic/TestAssignment7tam/blob/main/Screenshots/Screenshot_2556x1179_2.png?raw=true)
 
-Alternatively, you can use keyboard controls: WASD or Arrow keys for movement and Space or LMB for shooting.
+Alternatively, you can use keyboard controls: WASD or Arrow keys for movement and Space for shooting.
 
 ## License
 This project is licensed under the [MIT license](https://github.com/MicAPic/TestAssignment7tam/blob/main/LICENSE).
