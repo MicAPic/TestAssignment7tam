@@ -1,9 +1,12 @@
 # TestAssignment7tam
 ________________________________________________________________
-TestAssignment7tam is a test assignment I did for a job interview in around 2 days. It's a 2D top-down shooter that uses Unity's _Netcode for GameObjects_, _Relay_ and _Lobby_ packages as the network stack, providing a seamless multiplayer experience for Andorid devices.
+TestAssignment7tam is a test assignment I did for a job interview in around 3 days. It's a 2D top-down shooter that uses Unity's _Netcode for GameObjects_, _Relay_ and _Lobby_ packages as the network stack, providing a seamless multiplayer experience for Andorid devices.
 
 ## Table of Contents
-//TODO
+1. [Getting Started](#getting-started)
+2. [Setting Up Unity Dashboard](#setting-up-unity-dashboard)
+3. [How to Play](#how-to-play)
+4. [License](#license)
 
 ## Getting Started
 ### Prerequisites

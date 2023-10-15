@@ -113,7 +113,7 @@ public class PlayerNetworkController : NetworkBehaviour
     private void SpawnBulletServerRpc()
     {
         var result = Instantiate(bulletPrefab, transform).GetComponent<Bullet>();
-        result.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
+        result.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId, true);
         
         _pool.Add(result);
         

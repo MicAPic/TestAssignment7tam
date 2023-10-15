@@ -22,6 +22,9 @@ namespace UI
         private Image healthBar;
         [SerializeField]
         private HealthController healthController;
+        [Space]
+        [SerializeField]
+        private CoinPouch coinPouch;
 
         private NetworkVariable<FixedString32Bytes> _playerName = new(string.Empty, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
@@ -35,19 +38,31 @@ namespace UI
         {
             _playerName.OnValueChanged += UIManager.Instance.RegisterPlayerInfoClientRpc;
             healthController.healthPoints.OnValueChanged += UpdateHealthBarClientRpc;
+            coinPouch.coins.OnValueChanged += UpdateCoinCounterClientRpc;
         }
         
         void OnDisable()
         {
             _playerName.OnValueChanged -= UIManager.Instance.RegisterPlayerInfoClientRpc;
             healthController.healthPoints.OnValueChanged -= UpdateHealthBarClientRpc;
+            coinPouch.coins.OnValueChanged -= UpdateCoinCounterClientRpc;
         }
 
         public void UpdatePlayerNameText()
         {
             playerNameText.text = _playerName.Value.ToString();
         }
+
+        public void UpdateHealthBar()
+        {
+            healthBar.fillAmount = healthController.healthPoints.Value / healthController.maxHealth.Value;
+        }
         
+        public void UpdateCoinCounter()
+        {
+            coinCounterText.text = $"¢{coinPouch.coins.Value}";
+        }
+
         [ClientRpc]
         private void UpdateHealthBarClientRpc(float previousValue, float newValue)
         {
@@ -55,6 +70,12 @@ namespace UI
                 newValue / healthController.maxHealth.Value, 
                 0.3f
             );
+        }
+
+        [ClientRpc]
+        private void UpdateCoinCounterClientRpc(int previousValue, int newValue)
+        {
+            coinCounterText.text = $"¢{newValue}";
         }
     }
 }

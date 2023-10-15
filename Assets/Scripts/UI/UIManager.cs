@@ -20,18 +20,6 @@ namespace UI
             Instance = this;
         }
 
-        // Start is called before the first frame update
-        // void Start()
-        // {
-        //
-        // }
-        
-        // Update is called once per frame
-        // void Update()
-        // {
-        //
-        // }
-
         [ClientRpc]
         public void RegisterPlayerInfoClientRpc(FixedString32Bytes previousValue, FixedString32Bytes newValue)
         {
@@ -41,15 +29,17 @@ namespace UI
             {
                 _playerInfos[playerInfo.OwnerClientId] = playerInfo;
             }
-            UpdatePlayerNamesClientRpc();
+            UpdatePlayerInfosClientRpc();
         }
 
         [ClientRpc]
-        private void UpdatePlayerNamesClientRpc()
+        private void UpdatePlayerInfosClientRpc()
         {
             foreach (var playerInfo in _playerInfos.Values)
             {
                 playerInfo.UpdatePlayerNameText();
+                playerInfo.UpdateHealthBar();
+                playerInfo.UpdateCoinCounter();
             }
         }
     }

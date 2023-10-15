@@ -277,7 +277,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 0
+  m_text: "\xA20"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c56a8ad842d7d4d0b9238df1ebd0c9d8, type: 2}
   m_sharedMaterial: {fileID: 445353707774847774, guid: c56a8ad842d7d4d0b9238df1ebd0c9d8, type: 2}
@@ -466,6 +466,7 @@ MonoBehaviour:
   coinCounterText: {fileID: 1577141232}
   healthBar: {fileID: 691459276}
   healthController: {fileID: 9164795528885724950}
+  coinPouch: {fileID: 3657823150393111845}
 --- !u!1 &7931184067744800557
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +511,7 @@ GameObject:
   - component: {fileID: 4424393695563509213}
   - component: {fileID: 9189275893346819561}
   - component: {fileID: 9164795528885724950}
+  - component: {fileID: 3657823150393111845}
   m_Layer: 3
   m_Name: Avatar
   m_TagString: Untagged
@@ -659,7 +661,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthPoints:
     m_InternalValue: 100
-  maxHealth:
+--- !u!114 &3657823150393111845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8084806523688976956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62fa4f01fe4c502498fb19a282de71e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Coins:
     m_InternalValue: 0
 --- !u!1 &8084806523993847442
 GameObject:
