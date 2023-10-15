@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
-using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -31,8 +31,7 @@ namespace Network
         private const float PollTimerInterval = 1.8f; // seconds, min interval is 1 second
         private float _heartbeatTimer;
         private float _lobbyPollTimer;
-
-
+        
         [Header("Player Info")]
         private string _currentPlayerName;
     
@@ -43,13 +42,21 @@ namespace Network
         private Button joinButton;
         [SerializeField]
         private TMP_Text nicknameText;
+        [SerializeField]
+        private TMP_Text errorText;
+        [SerializeField]
+        private float errorTextAppearanceDuration = 0.5f;
+        [SerializeField]
+        private float errorTextStayDuration = 1.0f;
+        
+        private Tween _errorTextAppearanceTween;
+        private Tween _errorTextFadeTween;
 
         void Awake()
         {
             if (Instance != null)
             {
-                Destroy(gameObject);
-                return;
+                Destroy(Instance.gameObject);
             }
         
             Instance = this;
@@ -119,29 +126,26 @@ namespace Network
             }
             catch (Exception exception)
             {
-                if (exception is IndexOutOfRangeException)
+                if (exception is ArgumentOutOfRangeException)
                 {
                     // no lobby found
-                    // TODO: show error message to the user
+                    _errorTextAppearanceTween.Kill();
+                    _errorTextFadeTween.Kill();
+                    _errorTextAppearanceTween = errorText.rectTransform.DOAnchorPosY(180.0f, errorTextAppearanceDuration);
+                    _errorTextFadeTween = errorText.DOFade(1.0f, errorTextAppearanceDuration)
+                        .OnComplete(() =>
+                        {
+                            _errorTextAppearanceTween = errorText.rectTransform.DOAnchorPosY(157.0f, errorTextAppearanceDuration)
+                                .SetDelay(errorTextStayDuration);
+                            _errorTextFadeTween = errorText.DOFade(0.0f, errorTextAppearanceDuration)
+                                .SetDelay(errorTextStayDuration);
+                        });
                     SceneLoadData.CanLoadScene = true;
                     return;
                 }
                 Debug.LogError(exception);
             }
         }
-
-        // public async void LeaveLobby()
-        // {
-        //     try
-        //     {
-        //         await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, AuthenticationService.Instance.PlayerId);
-        //         
-        //     }
-        //     catch (LobbyServiceException exception)
-        //     {
-        //         Debug.LogError(exception);
-        //     }
-        // }
 
         public void SetHostParameters(string newLobbyToHost)
         {
@@ -165,8 +169,14 @@ namespace Network
             // Initialize UnityServices and our player
             var initializationOptions = new InitializationOptions();
             initializationOptions.SetProfile(_currentPlayerName);
-        
+
             await UnityServices.InitializeAsync(initializationOptions);
+            if (AuthenticationService.Instance.IsAuthorized)
+            {
+                nicknameText.text = $"Имя игрока: {AuthenticationService.Instance.Profile}";
+                return;
+            }
+            // TODO: substitute the delegate to support unsubscription
             AuthenticationService.Instance.SignedIn += () =>
             {
                 Debug.Log("Signed in!");

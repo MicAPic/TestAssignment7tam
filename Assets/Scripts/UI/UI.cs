@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace UI
 {
-    public class UI : MonoBehaviour
+    public abstract class UI : MonoBehaviour
     {
         [SerializeField]
         protected string nextSceneName;

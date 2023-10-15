@@ -7,6 +7,16 @@ public class HealthController : NetworkBehaviour
     [Header("Parameters")]
     public NetworkVariable<float> healthPoints = new(100.0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     public NetworkVariable<float> maxHealth;
+    
+    [Header("Visuals")]
+    [SerializeField]
+    private Transform damageParticles;
+    private ParticleSystem _particleSystem;
+
+    private void Awake()
+    {
+        _particleSystem = damageParticles.GetComponent<ParticleSystem>();
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -17,8 +27,11 @@ public class HealthController : NetworkBehaviour
             );
     }
 
-    public void TakeDamage(float damagePoints)
+    public void TakeDamage(float damagePoints, Vector3 damagePoint)
     {
+        damageParticles.position = damagePoint;
+        _particleSystem.Play();
+        
         if (!IsOwner) return;
         
         healthPoints.Value -= damagePoints;

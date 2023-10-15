@@ -17,11 +17,12 @@ public class Bullet : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.GetComponent<NetworkBehaviour>().OwnerClientId == OwnerClientId) return;
+
         if (col.gameObject.TryGetComponent(out HealthController healthController) && 
             healthController.enabled)
         {
             _spriteRenderer.enabled = false;
-            healthController.TakeDamage(damage);
+            healthController.TakeDamage(damage, transform.position);
             return;
         }
         DisableServerRpc();
