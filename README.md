@@ -26,7 +26,7 @@ Before you start, you need to configure Unity Gaming Services for this project. 
 ## How to Play
 Use the on-screen controls to move around and shoot other players. Your objective is simple: be the last one standing!
 
-![image](https://github.com/MicAPic/TestAssignment7tam/main/Screenshots/Screenshot_2556x1179_2.png?raw=true)
+![image](https://github.com/MicAPic/TestAssignment7tam/blob/829fa673495115a0234934be24a0fd66b52bd2d9/Screenshots/Screenshot_2556x1179_2.png?raw=true)
 
 Alternatively, you can use keyboard controls: WASD or Arrow keys for movement and Space or LMB for shooting.
 
