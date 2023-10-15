@@ -7,14 +7,8 @@ namespace UI
     {
         [SerializeField]
         protected string nextSceneName;
-    
-        // Start is called before the first frame update
-        // void Start()
-        // {
-        //     
-        // }
 
-        protected void LoadScene()
+        public virtual void LoadScene()
         {
             SceneLoadData.SceneToLoad = nextSceneName;
             SceneManager.LoadScene("Loading");

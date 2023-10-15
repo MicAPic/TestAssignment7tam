@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -129,17 +130,18 @@ namespace Network
             }
         }
 
-        public async void LeaveLobby()
-        {
-            try
-            {
-                await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, AuthenticationService.Instance.PlayerId);
-            }
-            catch (LobbyServiceException exception)
-            {
-                Debug.LogError(exception);
-            }
-        }
+        // public async void LeaveLobby()
+        // {
+        //     try
+        //     {
+        //         await LobbyService.Instance.RemovePlayerAsync(_currentLobby.Id, AuthenticationService.Instance.PlayerId);
+        //         
+        //     }
+        //     catch (LobbyServiceException exception)
+        //     {
+        //         Debug.LogError(exception);
+        //     }
+        // }
 
         public void SetHostParameters(string newLobbyToHost)
         {

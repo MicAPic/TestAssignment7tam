@@ -6,12 +6,14 @@ public class LoadingScreen : MonoBehaviour
 {
     void OnEnable()
     {
+        if (SceneLoadData.SceneToLoad != "Game") return;
         DontDestroyOnLoad(gameObject);
         PlayerNetworkController.OnPlayerLoaded += DeactivateAnimation;
     }
 
     void OnDisable()
     {
+        if (SceneLoadData.SceneToLoad != "Game") return;
         PlayerNetworkController.OnPlayerLoaded -= DeactivateAnimation;
     }
     

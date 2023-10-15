@@ -46,7 +46,6 @@ namespace Network
                 _relayServerData = new RelayServerData(allocation, "dtls");
                 NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(_relayServerData);
                 NetworkManager.Singleton.StartHost();
-                
 
                 return joinCode;
             }

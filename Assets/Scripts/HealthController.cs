@@ -1,3 +1,4 @@
+using UI;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ public class HealthController : NetworkBehaviour
         
         if (healthPoints.Value <= 0)
         {
+            // OnPlayerDeath?.Invoke(OwnerClientId);
             DieServerRpc();
         }
     }
@@ -38,5 +40,6 @@ public class HealthController : NetworkBehaviour
     private void DieClientRpc()
     {
         transform.parent.gameObject.SetActive(false);
+        UIManager.Instance.RemovePlayerInfoClientRpc(OwnerClientId);
     }
 }
